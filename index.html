@@ -28,7 +28,7 @@
       <h2>Calculate Your Tax</h2>
       <div class="form-row">
         <div class="form-group">
-          <label for="salary">Annual Gross Salary</label>
+          <label for="salary" id="salary-label">Annual Gross Salary</label>
           <div class="input-wrapper">
             <span class="input-prefix">$</span>
             <input type="text" id="salary" placeholder="e.g. 85,000" inputmode="numeric" autocomplete="off">
@@ -53,6 +53,11 @@
           <input type="checkbox" id="opt-help">
           <span class="option-label">I have a HELP / HECS debt</span>
           <span class="option-hint">Adds HELP repayment based on ATO income thresholds — rate applies to entire repayment income</span>
+        </label>
+        <label class="option-item">
+          <input type="checkbox" id="opt-super">
+          <span class="option-label">Income includes super</span>
+          <span class="option-hint">Enter your total package — base salary is back-calculated as package ÷ (1 + super rate)</span>
         </label>
       </div>
 
@@ -97,8 +102,12 @@
 
       <table class="breakdown-table">
         <tbody>
+          <tr id="row-package" hidden>
+            <td>Total Package (incl. super)</td>
+            <td class="amount" id="t-package"></td>
+          </tr>
           <tr>
-            <td>Gross Income</td>
+            <td id="label-gross">Gross Income</td>
             <td class="amount" id="t-gross"></td>
           </tr>
           <tr class="deduction-row">

@@ -252,9 +252,9 @@ function saveHistory(history) {
 
 function addToHistory(result) {
   const history = loadHistory();
-  // Remove duplicate entry for same gross + year + residency + HELP status
+  // Remove duplicate entry for same gross + year + residency + HELP + super-included status
   const filtered = history.filter(
-    h => !(h.grossIncome === result.grossIncome && h.yearKey === result.yearKey && h.isResident === result.isResident && !!h.hasHELP === !!result.hasHELP)
+    h => !(h.grossIncome === result.grossIncome && h.yearKey === result.yearKey && h.isResident === result.isResident && !!h.hasHELP === !!result.hasHELP && !!h.includesSuper === !!result.includesSuper)
   );
   filtered.unshift(result);
   const trimmed = filtered.slice(0, MAX_HISTORY);
@@ -295,11 +295,16 @@ function renderResults(r) {
   setText('r-net', fmt(r.netIncome));
 
   // Show/hide rows that don't apply to non-residents or aren't enabled
+  document.getElementById('row-package').hidden = !r.includesSuper;
   document.getElementById('row-lito').hidden = !r.isResident;
   document.getElementById('row-medicare').hidden = !r.isResident;
   document.getElementById('row-help').hidden = !r.hasHELP;
 
-  // Tax bar
+  // Relabel gross income row when salary was entered as a package
+  document.getElementById('label-gross').textContent =
+    r.includesSuper ? 'Base Salary (excl. super)' : 'Gross Income';
+
+  // Tax bar (percentages relative to base salary / grossIncome)
   const taxPct      = r.grossIncome > 0 ? (r.incomeTax     / r.grossIncome) * 100 : 0;
   const medicarePct = r.grossIncome > 0 ? (r.medicare      / r.grossIncome) * 100 : 0;
   const helpPct     = r.grossIncome > 0 ? (r.helpRepayment / r.grossIncome) * 100 : 0;
@@ -309,6 +314,7 @@ function renderResults(r) {
   setWidth('bar-net',      netPct);
 
   // Breakdown table
+  if (r.includesSuper) setText('t-package', fmt(r.packageTotal));
   setText('t-gross',          fmt(r.grossIncome));
   setText('t-tax-before',     '−' + fmt(r.taxBeforeOffset));
   setText('t-lito',           '+' + fmt(r.lito));
@@ -372,19 +378,20 @@ function renderHistory(history) {
 
   // Remember the most-recently-added entry before sorting so we can highlight it
   const h0 = history[0];
-  const latestKey = h0.grossIncome + '_' + h0.yearKey + '_' + h0.isResident + '_' + !!h0.hasHELP;
+  const latestKey = h0.grossIncome + '_' + h0.yearKey + '_' + h0.isResident + '_' + !!h0.hasHELP + '_' + !!h0.includesSuper;
 
   tbody.innerHTML = sortHistory(history).map(r => {
-    const key = r.grossIncome + '_' + r.yearKey + '_' + r.isResident + '_' + !!r.hasHELP;
+    const key = r.grossIncome + '_' + r.yearKey + '_' + r.isResident + '_' + !!r.hasHELP + '_' + !!r.includesSuper;
     const isLatest = key === latestKey;
     const nrBadge = r.isResident === false ? ' <span class="nr-badge">NR</span>' : '';
+    const pkgBadge = r.includesSuper ? ' <span class="pkg-badge">pkg</span>' : '';
     const medicareCell = r.isResident === false ? '<span class="td-na">N/A</span>' : fmt(r.medicare);
     const litoCell = r.isResident === false ? '<span class="td-na">N/A</span>' : `<span class="td-offset">${fmt(r.lito)}</span>`;
     const helpCell = r.hasHELP ? `<span class="td-deduction">${fmt(r.helpRepayment)}</span>` : '<span class="td-na">—</span>';
     const grandTotal = r.totalDeductions ?? r.totalTax;
     return `
       <tr class="${isLatest ? 'latest' : ''}">
-        <td><strong>${fmt(r.grossIncome)}</strong></td>
+        <td><strong>${fmt(r.grossIncome)}</strong>${pkgBadge}</td>
         <td>${r.yearLabel}${nrBadge}</td>
         <td class="td-deduction">${fmt(r.incomeTax)}</td>
         <td>${litoCell}</td>
@@ -420,7 +427,8 @@ function onCalculate() {
   const yearKey = document.getElementById('tax-year').value;
   const isResident = document.getElementById('opt-resident').checked;
   const hasHELP = document.getElementById('opt-help').checked;
-  const gross = parseSalary(salaryInput.value);
+  const includesSuper = document.getElementById('opt-super').checked;
+  let gross = parseSalary(salaryInput.value);
 
   if (!gross || gross <= 0) {
     salaryInput.focus();
@@ -429,7 +437,17 @@ function onCalculate() {
     return;
   }
 
+  let packageTotal = null;
+  if (includesSuper) {
+    const superRate = TAX_CONFIGS[yearKey].superRate;
+    packageTotal = gross;
+    gross = gross / (1 + superRate);
+  }
+
   const result = calculate(gross, yearKey, isResident, hasHELP);
+  result.includesSuper = includesSuper;
+  if (packageTotal !== null) result.packageTotal = packageTotal;
+
   renderResults(result);
 
   const history = addToHistory(result);
@@ -450,6 +468,11 @@ function init() {
   clearBtn.addEventListener('click', onClearHistory);
 
   salaryInput.addEventListener('input', () => formatSalaryInput(salaryInput));
+
+  document.getElementById('opt-super').addEventListener('change', e => {
+    document.getElementById('salary-label').textContent =
+      e.target.checked ? 'Total Package (incl. super)' : 'Annual Gross Salary';
+  });
 
   salaryInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') onCalculate();
