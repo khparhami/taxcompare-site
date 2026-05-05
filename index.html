@@ -49,6 +49,11 @@
           <span class="option-label">Australian resident for tax purposes</span>
           <span class="option-hint">Uncheck for foreign residents — applies flat non-resident rates, removes LITO &amp; Medicare</span>
         </label>
+        <label class="option-item">
+          <input type="checkbox" id="opt-help">
+          <span class="option-label">I have a HELP / HECS debt</span>
+          <span class="option-hint">Adds HELP repayment based on ATO income thresholds — rate applies to entire repayment income</span>
+        </label>
       </div>
 
       <button id="calculate-btn" class="btn-primary">Calculate</button>
@@ -108,8 +113,12 @@
             <td>Medicare Levy (2%)</td>
             <td class="amount deduction" id="t-medicare"></td>
           </tr>
+          <tr id="row-help" class="deduction-row" hidden>
+            <td>HELP Repayment</td>
+            <td class="amount deduction" id="t-help"></td>
+          </tr>
           <tr class="separator-row">
-            <td><strong>Total Tax Payable</strong></td>
+            <td><strong>Total Deductions</strong></td>
             <td class="amount deduction"><strong id="t-total-tax"></strong></td>
           </tr>
           <tr class="net-row">
@@ -166,7 +175,8 @@
               <th data-sort="incomeTax">Income Tax</th>
               <th data-sort="lito">LITO</th>
               <th data-sort="medicare">Medicare</th>
-              <th data-sort="totalTax">Total Tax</th>
+              <th data-sort="helpRepayment">HELP</th>
+              <th data-sort="totalDeductions">Total Tax</th>
               <th data-sort="netIncome">Net Annual</th>
               <th data-sort="effectiveRate">Effective Rate</th>
               <th data-sort="marginalRate">Marginal Rate</th>
