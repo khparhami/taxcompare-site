@@ -43,6 +43,14 @@
           </select>
         </div>
       </div>
+      <div class="options-section">
+        <label class="option-item">
+          <input type="checkbox" id="opt-resident" checked>
+          <span class="option-label">Australian resident for tax purposes</span>
+          <span class="option-hint">Uncheck for foreign residents — applies flat non-resident rates, removes LITO &amp; Medicare</span>
+        </label>
+      </div>
+
       <button id="calculate-btn" class="btn-primary">Calculate</button>
     </section>
 
@@ -92,11 +100,11 @@
             <td>Income Tax (before offsets)</td>
             <td class="amount deduction" id="t-tax-before"></td>
           </tr>
-          <tr class="deduction-row">
+          <tr id="row-lito" class="deduction-row">
             <td>Low Income Tax Offset (LITO)</td>
             <td class="amount offset" id="t-lito"></td>
           </tr>
-          <tr class="deduction-row">
+          <tr id="row-medicare" class="deduction-row">
             <td>Medicare Levy (2%)</td>
             <td class="amount deduction" id="t-medicare"></td>
           </tr>

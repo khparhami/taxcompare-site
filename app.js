@@ -16,6 +16,12 @@ const TAX_CONFIGS = {
       { over: 135000,  max: 190000,   rate: 0.37,  base: 31288  },
       { over: 190000,  max: Infinity, rate: 0.45,  base: 51638  },
     ],
+    // Non-residents: no tax-free threshold, flat 30% to $135k (Stage 3)
+    nonResidentBrackets: [
+      { over: 0,       max: 135000,   rate: 0.30,  base: 0      },
+      { over: 135000,  max: 190000,   rate: 0.37,  base: 40500  },
+      { over: 190000,  max: Infinity, rate: 0.45,  base: 60850  },
+    ],
     lito: { max: 700, phase1Start: 37500, phase1End: 45000, phase1Rate: 0.05, phase2End: 66667, phase2Rate: 0.015 },
     medicareThreshold: 26000,
     medicareRate: 0.02,
@@ -31,6 +37,11 @@ const TAX_CONFIGS = {
       { over: 135000,  max: 190000,   rate: 0.37,  base: 31288  },
       { over: 190000,  max: Infinity, rate: 0.45,  base: 51638  },
     ],
+    nonResidentBrackets: [
+      { over: 0,       max: 135000,   rate: 0.30,  base: 0      },
+      { over: 135000,  max: 190000,   rate: 0.37,  base: 40500  },
+      { over: 190000,  max: Infinity, rate: 0.45,  base: 60850  },
+    ],
     lito: { max: 700, phase1Start: 37500, phase1End: 45000, phase1Rate: 0.05, phase2End: 66667, phase2Rate: 0.015 },
     medicareThreshold: 26000,
     medicareRate: 0.02,
@@ -45,6 +56,12 @@ const TAX_CONFIGS = {
       { over: 45000,   max: 120000,   rate: 0.325, base: 5092   },
       { over: 120000,  max: 180000,   rate: 0.37,  base: 29467  },
       { over: 180000,  max: Infinity, rate: 0.45,  base: 51667  },
+    ],
+    // Non-residents: flat 32.5% to $120k (pre Stage 3)
+    nonResidentBrackets: [
+      { over: 0,       max: 120000,   rate: 0.325, base: 0      },
+      { over: 120000,  max: 180000,   rate: 0.37,  base: 39000  },
+      { over: 180000,  max: Infinity, rate: 0.45,  base: 61200  },
     ],
     lito: { max: 700, phase1Start: 37500, phase1End: 45000, phase1Rate: 0.05, phase2End: 66667, phase2Rate: 0.015 },
     medicareThreshold: 24276,
@@ -100,22 +117,25 @@ function getMarginalRate(income, brackets) {
   return brackets.at(-1).rate;
 }
 
-function calculate(grossIncome, yearKey) {
+function calculate(grossIncome, yearKey, isResident = true) {
   const config = TAX_CONFIGS[yearKey];
-  const taxBeforeOffset = calcIncomeTax(grossIncome, config.brackets);
-  const lito = Math.min(calcLITO(grossIncome, config.lito), taxBeforeOffset);
+  const brackets = isResident ? config.brackets : config.nonResidentBrackets;
+  const taxBeforeOffset = calcIncomeTax(grossIncome, brackets);
+  // Non-residents get no LITO and no Medicare levy
+  const lito = isResident ? Math.min(calcLITO(grossIncome, config.lito), taxBeforeOffset) : 0;
   const incomeTax = Math.max(0, taxBeforeOffset - lito);
-  const medicare = calcMedicare(grossIncome, config);
+  const medicare = isResident ? calcMedicare(grossIncome, config) : 0;
   const totalTax = incomeTax + medicare;
   const netIncome = grossIncome - totalTax;
   const effectiveRate = grossIncome > 0 ? totalTax / grossIncome : 0;
-  const marginalRate = getMarginalRate(grossIncome, config.brackets);
+  const marginalRate = getMarginalRate(grossIncome, brackets);
   const superAmount = grossIncome * config.superRate;
 
   return {
     grossIncome,
     yearKey,
     yearLabel: config.label,
+    isResident,
     taxBeforeOffset,
     lito,
     incomeTax,
@@ -155,9 +175,9 @@ function saveHistory(history) {
 
 function addToHistory(result) {
   const history = loadHistory();
-  // Remove duplicate entry for same gross + year if it already exists
+  // Remove duplicate entry for same gross + year + residency
   const filtered = history.filter(
-    h => !(h.grossIncome === result.grossIncome && h.yearKey === result.yearKey)
+    h => !(h.grossIncome === result.grossIncome && h.yearKey === result.yearKey && h.isResident === result.isResident)
   );
   filtered.unshift(result);
   const trimmed = filtered.slice(0, MAX_HISTORY);
@@ -187,35 +207,41 @@ function renderResults(r) {
   const section = document.getElementById('results');
   section.hidden = false;
 
-  setText('results-year-label', r.yearLabel);
+  // Year label + residency badge
+  const badge = r.isResident ? '' : ' <span class="nr-badge">Non-resident</span>';
+  document.getElementById('results-year-label').innerHTML = r.yearLabel + badge;
 
   // Summary cards
   setText('r-gross', fmt(r.grossIncome));
   setText('r-tax', fmt(r.incomeTax));
-  setText('r-medicare', fmt(r.medicare));
+  setText('r-medicare', r.isResident ? fmt(r.medicare) : 'N/A');
   setText('r-net', fmt(r.netIncome));
 
+  // Show/hide rows that don't apply to non-residents
+  document.getElementById('row-lito').hidden = !r.isResident;
+  document.getElementById('row-medicare').hidden = !r.isResident;
+
   // Tax bar
-  const taxPct = r.grossIncome > 0 ? (r.incomeTax / r.grossIncome) * 100 : 0;
-  const medicarePct = r.grossIncome > 0 ? (r.medicare / r.grossIncome) * 100 : 0;
-  const netPct = 100 - taxPct - medicarePct;
-  setWidth('bar-tax', taxPct);
+  const taxPct    = r.grossIncome > 0 ? (r.incomeTax / r.grossIncome) * 100 : 0;
+  const medicarePct = r.grossIncome > 0 ? (r.medicare  / r.grossIncome) * 100 : 0;
+  const netPct    = 100 - taxPct - medicarePct;
+  setWidth('bar-tax',      taxPct);
   setWidth('bar-medicare', medicarePct);
-  setWidth('bar-net', netPct);
+  setWidth('bar-net',      netPct);
 
   // Breakdown table
-  setText('t-gross', fmt(r.grossIncome));
-  setText('t-tax-before', '−' + fmt(r.taxBeforeOffset));
-  setText('t-lito', '+' + fmt(r.lito));
-  setText('t-medicare', '−' + fmt(r.medicare));
-  setText('t-total-tax', '−' + fmt(r.totalTax));
-  setText('t-net-annual', fmt(r.netIncome));
-  setText('t-net-monthly', fmt(r.netIncome / 12));
-  setText('t-net-fortnightly', fmt(r.netIncome / 26));
-  setText('t-net-weekly', fmt(r.netIncome / 52));
-  setText('t-super', fmt(r.superAmount) + ' (' + (r.superRate * 100) + '%)');
-  setText('t-effective', fmtPct(r.effectiveRate));
-  setText('t-marginal', fmtPct(r.marginalRate));
+  setText('t-gross',          fmt(r.grossIncome));
+  setText('t-tax-before',     '−' + fmt(r.taxBeforeOffset));
+  setText('t-lito',           '+' + fmt(r.lito));
+  setText('t-medicare',       '−' + fmt(r.medicare));
+  setText('t-total-tax',      '−' + fmt(r.totalTax));
+  setText('t-net-annual',     fmt(r.netIncome));
+  setText('t-net-monthly',    fmt(r.netIncome / 12));
+  setText('t-net-fortnightly',fmt(r.netIncome / 26));
+  setText('t-net-weekly',     fmt(r.netIncome / 52));
+  setText('t-super',          fmt(r.superAmount) + ' (' + (r.superRate * 100) + '%)');
+  setText('t-effective',      fmtPct(r.effectiveRate));
+  setText('t-marginal',       fmtPct(r.marginalRate));
 
   section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -259,17 +285,21 @@ function renderHistory(history) {
   countEl.textContent = `(${history.length} of ${MAX_HISTORY})`;
 
   // Remember the most-recently-added entry before sorting so we can highlight it
-  const latestKey = history[0].grossIncome + '_' + history[0].yearKey;
+  const latestKey = history[0].grossIncome + '_' + history[0].yearKey + '_' + history[0].isResident;
 
   tbody.innerHTML = sortHistory(history).map(r => {
-    const isLatest = r.grossIncome + '_' + r.yearKey === latestKey;
+    const key = r.grossIncome + '_' + r.yearKey + '_' + r.isResident;
+    const isLatest = key === latestKey;
+    const nrBadge = r.isResident === false ? ' <span class="nr-badge">NR</span>' : '';
+    const medicareCell = r.isResident === false ? '<span class="td-na">N/A</span>' : fmt(r.medicare);
+    const litoCell = r.isResident === false ? '<span class="td-na">N/A</span>' : `<span class="td-offset">${fmt(r.lito)}</span>`;
     return `
       <tr class="${isLatest ? 'latest' : ''}">
         <td><strong>${fmt(r.grossIncome)}</strong></td>
-        <td>${r.yearLabel}</td>
+        <td>${r.yearLabel}${nrBadge}</td>
         <td class="td-deduction">${fmt(r.incomeTax)}</td>
-        <td class="td-offset">${fmt(r.lito)}</td>
-        <td class="td-deduction">${fmt(r.medicare)}</td>
+        <td>${litoCell}</td>
+        <td class="td-deduction">${medicareCell}</td>
         <td class="td-deduction"><strong>${fmt(r.totalTax)}</strong></td>
         <td class="td-net">${fmt(r.netIncome)}</td>
         <td class="td-rate">${fmtPct(r.effectiveRate)}</td>
@@ -298,6 +328,7 @@ function formatSalaryInput(input) {
 function onCalculate() {
   const salaryInput = document.getElementById('salary');
   const yearKey = document.getElementById('tax-year').value;
+  const isResident = document.getElementById('opt-resident').checked;
   const gross = parseSalary(salaryInput.value);
 
   if (!gross || gross <= 0) {
@@ -307,7 +338,7 @@ function onCalculate() {
     return;
   }
 
-  const result = calculate(gross, yearKey);
+  const result = calculate(gross, yearKey, isResident);
   renderResults(result);
 
   const history = addToHistory(result);
