@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Australian Tax Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">🦘</span>
+          <div>
+            <h1>Australian Tax Calculator</h1>
+            <p>Estimate your income tax and take-home pay</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Calculator Input -->
+    <section class="card calculator-card">
+      <h2>Calculate Your Tax</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="salary">Annual Gross Salary</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">$</span>
+            <input type="text" id="salary" placeholder="e.g. 85,000" inputmode="numeric" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tax-year">Financial Year</label>
+          <select id="tax-year">
+            <option value="2025-26" selected>2025–26</option>
+            <option value="2024-25">2024–25</option>
+            <option value="2023-24">2023–24 (pre Stage 3)</option>
+          </select>
+        </div>
+      </div>
+      <button id="calculate-btn" class="btn-primary">Calculate</button>
+    </section>
+
+    <!-- Results -->
+    <section class="card results-card" id="results" hidden>
+      <h2>Tax Breakdown <span id="results-year-label" class="year-tag"></span></h2>
+
+      <div class="summary-grid">
+        <div class="summary-item gross">
+          <span class="summary-label">Gross Income</span>
+          <span class="summary-value" id="r-gross"></span>
+        </div>
+        <div class="summary-item tax">
+          <span class="summary-label">Income Tax</span>
+          <span class="summary-value" id="r-tax"></span>
+        </div>
+        <div class="summary-item medicare">
+          <span class="summary-label">Medicare Levy</span>
+          <span class="summary-value" id="r-medicare"></span>
+        </div>
+        <div class="summary-item net">
+          <span class="summary-label">Net Income</span>
+          <span class="summary-value" id="r-net"></span>
+        </div>
+      </div>
+
+      <div class="tax-bar-wrapper">
+        <div class="tax-bar" id="tax-bar">
+          <div class="bar-segment bar-tax" id="bar-tax" title="Income Tax"></div>
+          <div class="bar-segment bar-medicare" id="bar-medicare" title="Medicare Levy"></div>
+          <div class="bar-segment bar-net" id="bar-net" title="Net Income"></div>
+        </div>
+        <div class="bar-legend">
+          <span class="legend-dot dot-tax"></span> Income Tax
+          <span class="legend-dot dot-medicare"></span> Medicare Levy
+          <span class="legend-dot dot-net"></span> Net Income
+        </div>
+      </div>
+
+      <table class="breakdown-table">
+        <tbody>
+          <tr>
+            <td>Gross Income</td>
+            <td class="amount" id="t-gross"></td>
+          </tr>
+          <tr class="deduction-row">
+            <td>Income Tax (before offsets)</td>
+            <td class="amount deduction" id="t-tax-before"></td>
+          </tr>
+          <tr class="deduction-row">
+            <td>Low Income Tax Offset (LITO)</td>
+            <td class="amount offset" id="t-lito"></td>
+          </tr>
+          <tr class="deduction-row">
+            <td>Medicare Levy (2%)</td>
+            <td class="amount deduction" id="t-medicare"></td>
+          </tr>
+          <tr class="separator-row">
+            <td><strong>Total Tax Payable</strong></td>
+            <td class="amount deduction"><strong id="t-total-tax"></strong></td>
+          </tr>
+          <tr class="net-row">
+            <td><strong>Net Income (Annual)</strong></td>
+            <td class="amount net"><strong id="t-net-annual"></strong></td>
+          </tr>
+          <tr>
+            <td>Net Income (Monthly)</td>
+            <td class="amount" id="t-net-monthly"></td>
+          </tr>
+          <tr>
+            <td>Net Income (Fortnightly)</td>
+            <td class="amount" id="t-net-fortnightly"></td>
+          </tr>
+          <tr>
+            <td>Net Income (Weekly)</td>
+            <td class="amount" id="t-net-weekly"></td>
+          </tr>
+          <tr>
+            <td>Employer Super (12%)</td>
+            <td class="amount" id="t-super"></td>
+          </tr>
+          <tr>
+            <td>Effective Tax Rate</td>
+            <td class="amount rate" id="t-effective"></td>
+          </tr>
+          <tr>
+            <td>Marginal Tax Rate</td>
+            <td class="amount rate" id="t-marginal"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="disclaimer">
+        Rates based on ATO guidelines. LITO and Medicare shade-in applied where applicable.
+        Super shown for reference only — it is paid by your employer on top of your salary.
+        This calculator is for general guidance; consult a tax professional for personalised advice.
+      </p>
+    </section>
+
+    <!-- Comparison History -->
+    <section class="card history-card" id="history-section" hidden>
+      <div class="history-header">
+        <h2>Salary Comparison <span class="history-count" id="history-count"></span></h2>
+        <button id="clear-btn" class="btn-danger">Clear History</button>
+      </div>
+      <p class="history-subtitle">Showing your last <strong>10</strong> salary calculations. Click any column header to sort.</p>
+      <div class="table-scroll">
+        <table class="comparison-table" id="history-table">
+          <thead>
+            <tr>
+              <th data-sort="grossIncome">Gross Salary</th>
+              <th data-sort="yearKey">Year</th>
+              <th data-sort="incomeTax">Income Tax</th>
+              <th data-sort="lito">LITO</th>
+              <th data-sort="medicare">Medicare</th>
+              <th data-sort="totalTax">Total Tax</th>
+              <th data-sort="netIncome">Net Annual</th>
+              <th data-sort="effectiveRate">Effective Rate</th>
+              <th data-sort="marginalRate">Marginal Rate</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Australian Tax Calculator &mdash; For general information only. Tax rates: ATO 2023–24, 2024–25, 2025–26.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
