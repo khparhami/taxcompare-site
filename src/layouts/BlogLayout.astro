@@ -1,0 +1,247 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AdUnit from '../components/AdUnit.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, author, tags } = post.data;
+
+const formattedPubDate = pubDate.toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} | Australian Tax Calculator`} description={description}>
+  <main class="blog-container">
+    <article>
+      <header class="post-header">
+        <div class="post-tags">
+          {tags.map(tag => <span class="tag">{tag}</span>)}
+        </div>
+        <h1>{title}</h1>
+        <p class="post-desc">{description}</p>
+        <div class="post-meta">
+          <span class="author">{author}</span>
+          <span class="sep">·</span>
+          <time datetime={pubDate.toISOString()}>Published {formattedPubDate}</time>
+          {
+            updatedDate && (
+              <>
+                <span class="sep">·</span>
+                <span>Updated {formattedUpdatedDate}</span>
+              </>
+            )
+          }
+        </div>
+      </header>
+
+      <AdUnit slot="2918374650" />
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      <AdUnit slot="2918374650" />
+    </article>
+
+    <div class="post-footer">
+      <a href="/blog/" class="btn-link">← All Articles</a>
+      <a href="/" class="btn-link">Use the Calculator →</a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+    width: 100%;
+    flex: 1;
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #eff6ff;
+    color: #0072ce;
+    border: 1px solid #bfdbfe;
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    font-weight: 800;
+    color: #00205b;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .post-desc {
+    font-size: 1.05rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    border-left: 3px solid #0072ce;
+    padding-left: 1rem;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    flex-wrap: wrap;
+  }
+
+  .author {
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .sep {
+    color: #cbd5e1;
+  }
+
+  .prose {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #1a202c;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #00205b;
+    margin: 2rem 0 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #00205b;
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.25rem;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .prose :global(strong) {
+    color: #00205b;
+    font-weight: 700;
+  }
+
+  .prose :global(a) {
+    color: #0072ce;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid #0072ce;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: #64748b;
+    font-style: italic;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .prose :global(th) {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    background: #f4f6f9;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .prose :global(td) {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .prose :global(code) {
+    background: #f1f5f9;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.875em;
+    color: #0072ce;
+  }
+
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e2e8f0;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .btn-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0072ce;
+    text-decoration: none;
+    padding: 0.5rem 0.875rem;
+    border: 2px solid #0072ce;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .btn-link:hover {
+    background: #0072ce;
+    color: white;
+  }
+</style>

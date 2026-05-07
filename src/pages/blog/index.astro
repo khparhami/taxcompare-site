@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
+---
+
+<BaseLayout
+  title="Tax & Finance Blog | Australian Tax Calculator"
+  description="Plain-English articles on Australian income tax, Medicare, HELP debt, superannuation, and personal finance."
+>
+  <main class="blog-main">
+    <div class="page-header">
+      <h1>Tax &amp; Finance Blog</h1>
+      <p>{posts.length} article{posts.length !== 1 ? 's' : ''}</p>
+    </div>
+
+    {
+      allTags.length > 0 && (
+        <div class="tag-filter">
+          {allTags.map(tag => (
+            <span class="filter-tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="posts-grid">
+      {posts.map(post => <BlogCard post={post} />)}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+    width: 100%;
+    flex: 1;
+  }
+
+  .page-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .page-header h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    color: #00205b;
+    letter-spacing: -0.02em;
+  }
+
+  .page-header p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+  }
+
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #ffffff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    padding: 0.25rem 0.6rem;
+    border-radius: 99px;
+    cursor: default;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+</style>

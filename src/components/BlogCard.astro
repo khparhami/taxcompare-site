@@ -1,0 +1,106 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags, author } = post.data;
+const formattedDate = pubDate.toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="blog-card">
+  <div class="card-tags">
+    {tags.slice(0, 3).map(tag => <span class="tag">{tag}</span>)}
+  </div>
+  <h2 class="card-title">
+    <a href={`/blog/${post.slug}/`}>{title}</a>
+  </h2>
+  <p class="card-desc">{description}</p>
+  <div class="card-meta">
+    <span class="author">{author}</span>
+    <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .blog-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    border-color: #0072ce;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #eff6ff;
+    color: #0072ce;
+    border: 1px solid #bfdbfe;
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #00205b;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .card-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-title a:hover {
+    color: #0072ce;
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.75rem;
+    margin-top: auto;
+  }
+
+  .author {
+    font-weight: 600;
+  }
+</style>

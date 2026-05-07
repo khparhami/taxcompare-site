@@ -1,0 +1,118 @@
+---
+const currentPath = Astro.url.pathname;
+const navLinks = [
+  { href: '/', label: 'Calculator' },
+  { href: '/blog/', label: 'Blog' },
+];
+---
+
+<header>
+  <div class="container">
+    <div class="header-content">
+      <a href="/" class="logo">
+        <span class="logo-icon">🦘</span>
+        <div>
+          <h1>Australian Tax Calculator</h1>
+          <p>Estimate your income tax and take-home pay</p>
+        </div>
+      </a>
+      <nav>
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class:list={['nav-link', { active: currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href)) }]}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  header {
+    background: linear-gradient(135deg, #00205b 0%, #003087 100%);
+    color: white;
+    padding: 1.5rem 0;
+    border-bottom: 4px solid #ffcd00;
+  }
+
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .logo h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: white;
+    margin: 0;
+  }
+
+  .logo p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 0.15rem;
+  }
+
+  nav {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.4rem 0.875rem;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+  }
+
+  @media (max-width: 640px) {
+    .logo h1 {
+      font-size: 1.2rem;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+    }
+
+    .logo p {
+      display: none;
+    }
+
+    .nav-link {
+      font-size: 0.8rem;
+      padding: 0.35rem 0.6rem;
+    }
+  }
+</style>
