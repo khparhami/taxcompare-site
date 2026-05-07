@@ -1,0 +1,58 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00205b"/>
+      <stop offset="100%" stop-color="#003d8f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg2)"/>
+  <rect width="800" height="4" fill="#ffcd00"/>
+
+  <!-- Left: main message -->
+  <text x="60" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="96" font-weight="800" fill="white" letter-spacing="-4">$1,000</text>
+  <text x="63" y="200" font-family="system-ui,-apple-system,sans-serif" font-size="19" font-weight="700" fill="#ffcd00" letter-spacing="1">INSTANT WORK DEDUCTION</text>
+  <text x="63" y="228" font-family="system-ui,-apple-system,sans-serif" font-size="14" fill="rgba(255,255,255,0.55)">No receipts required · From the 2026–27 income year</text>
+
+  <!-- Stat cards row -->
+  <rect x="63" y="260" width="158" height="68" rx="8" fill="rgba(255,255,255,0.08)"/>
+  <text x="83" y="290" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="800" fill="white">6.2M</text>
+  <text x="83" y="312" font-family="system-ui,-apple-system,sans-serif" font-size="11.5" fill="rgba(255,255,255,0.5)">eligible workers</text>
+
+  <rect x="233" y="260" width="158" height="68" rx="8" fill="rgba(255,255,255,0.08)"/>
+  <text x="253" y="290" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="800" fill="#ffcd00">~$205</text>
+  <text x="253" y="312" font-family="system-ui,-apple-system,sans-serif" font-size="11.5" fill="rgba(255,255,255,0.5)">avg. tax saving</text>
+
+  <rect x="403" y="260" width="158" height="68" rx="8" fill="rgba(255,255,255,0.08)"/>
+  <text x="423" y="290" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="800" fill="white">42%</text>
+  <text x="423" y="312" font-family="system-ui,-apple-system,sans-serif" font-size="11.5" fill="rgba(255,255,255,0.5)">of all taxpayers</text>
+
+  <!-- Right: receipt illustration -->
+  <!-- Receipt paper -->
+  <rect x="645" y="75" width="110" height="155" rx="6" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+  <!-- Receipt torn bottom -->
+  <path d="M645 222 Q655 232 665 222 Q675 232 685 222 Q695 232 705 222 Q715 232 725 222 Q735 232 745 222 Q752 232 755 222 L755 230 L645 230 Z" fill="rgba(255,255,255,0.1)"/>
+  <!-- Lines on receipt -->
+  <line x1="660" y1="100" x2="740" y2="100" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <line x1="660" y1="116" x2="740" y2="116" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <line x1="660" y1="132" x2="740" y2="132" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <line x1="660" y1="148" x2="720" y2="148" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <!-- Divider -->
+  <line x1="660" y1="165" x2="740" y2="165" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+  <!-- Total amount -->
+  <text x="660" y="182" font-family="system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="600" fill="rgba(255,255,255,0.5)">TOTAL</text>
+  <text x="740" y="182" font-family="system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="700" fill="#ffcd00" text-anchor="end">$1,000</text>
+
+  <!-- Green checkmark circle over receipt -->
+  <circle cx="700" cy="155" r="52" fill="rgba(0,32,91,0.85)"/>
+  <circle cx="700" cy="155" r="46" stroke="#00b894" stroke-width="3" fill="none"/>
+  <polyline points="679,155 694,172 722,138" stroke="#00b894" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Label under receipt -->
+  <text x="700" y="262" font-family="system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.4)" text-anchor="middle">NO RECEIPT NEEDED</text>
+
+  <!-- Footer -->
+  <text x="60" y="418" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="rgba(255,255,255,0.3)">Subject to legislation · Workers with higher expenses can still claim the actual amount</text>
+
+  <rect y="446" width="800" height="4" fill="#ffcd00"/>
+</svg>

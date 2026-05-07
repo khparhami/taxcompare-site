@@ -4,6 +4,7 @@ description: "The government has announced a new no-receipt $1,000 standard dedu
 pubDate: 2026-05-07
 author: "Australian Tax Calculator"
 tags: ["Tax Deductions", "2026-27", "Work Expenses", "Budget"]
+image: /images/work-deduction-1000.svg
 featured: true
 ---
 

@@ -4,6 +4,7 @@ description: "A plain-English guide to the 2025–26 tax brackets, how Stage 3 c
 pubDate: 2026-05-07
 author: "Australian Tax Calculator"
 tags: ["Income Tax", "2025-26", "Tax Brackets", "Stage 3"]
+image: /images/tax-brackets-2025-26.svg
 featured: true
 ---
 
