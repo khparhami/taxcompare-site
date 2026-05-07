@@ -9,6 +9,7 @@ const blog = defineCollection({
     updatedDate: z.date().optional(),
     author: z.string().default('Australian Tax Calculator'),
     tags: z.array(z.string()).default([]),
+    image: z.string().optional(),
     featured: z.boolean().default(false),
   }),
 });
