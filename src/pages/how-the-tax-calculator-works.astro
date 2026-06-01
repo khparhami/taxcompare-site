@@ -1,0 +1,469 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="How the Australian Tax Calculator Works — Tax Rules Explained"
+  description="A plain-English explanation of how Australian income tax is calculated: tax brackets, LITO, Medicare levy, HELP repayments, non-resident rates, and superannuation."
+>
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/styles.css" />
+  </Fragment>
+
+  <main class="container">
+
+    <section class="card intro-card">
+      <h2>How the Tax Calculator Works</h2>
+      <p>
+        This calculator follows the Australian Taxation Office (ATO) rules for individual income tax.
+        Below is a step-by-step explanation of every component used in the calculation, along with
+        the exact figures for each supported financial year.
+      </p>
+      <nav class="toc">
+        <a href="#brackets">Tax Brackets</a>
+        <a href="#lito">LITO</a>
+        <a href="#medicare">Medicare Levy</a>
+        <a href="#help">HELP / HECS</a>
+        <a href="#non-resident">Non-residents</a>
+        <a href="#super">Superannuation</a>
+        <a href="#rates">Effective vs Marginal Rate</a>
+      </nav>
+    </section>
+
+    <!-- ===== Income Tax Brackets ===== -->
+    <section class="card" id="brackets">
+      <h3>1. Income Tax Brackets</h3>
+      <p>
+        Australia uses a <strong>progressive tax system</strong>: each bracket's rate only applies
+        to the portion of income that falls within that bracket — not to the total income.
+        The first $18,200 is always tax-free for Australian residents.
+      </p>
+
+      <h4>2025–26 &amp; 2024–25 (Stage 3 rates)</h4>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr>
+              <th>Taxable Income</th>
+              <th>Rate</th>
+              <th>Tax on this portion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>$0 – $18,200</td><td>0%</td><td>Nil</td></tr>
+            <tr><td>$18,201 – $45,000</td><td>16%</td><td>16c per $1 over $18,200</td></tr>
+            <tr><td>$45,001 – $135,000</td><td>30%</td><td>$4,288 + 30c per $1 over $45,000</td></tr>
+            <tr><td>$135,001 – $190,000</td><td>37%</td><td>$31,288 + 37c per $1 over $135,000</td></tr>
+            <tr><td>Over $190,000</td><td>45%</td><td>$51,638 + 45c per $1 over $190,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Super (SGC) rate: 12% in 2025–26; 11.5% in 2024–25.</p>
+
+      <h4>2023–24 (pre Stage 3)</h4>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr>
+              <th>Taxable Income</th>
+              <th>Rate</th>
+              <th>Tax on this portion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>$0 – $18,200</td><td>0%</td><td>Nil</td></tr>
+            <tr><td>$18,201 – $45,000</td><td>19%</td><td>19c per $1 over $18,200</td></tr>
+            <tr><td>$45,001 – $120,000</td><td>32.5%</td><td>$5,092 + 32.5c per $1 over $45,000</td></tr>
+            <tr><td>$120,001 – $180,000</td><td>37%</td><td>$29,467 + 37c per $1 over $120,000</td></tr>
+            <tr><td>Over $180,000</td><td>45%</td><td>$51,667 + 45c per $1 over $180,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Super (SGC) rate: 11% in 2023–24.</p>
+    </section>
+
+    <!-- ===== LITO ===== -->
+    <section class="card" id="lito">
+      <h3>2. Low Income Tax Offset (LITO)</h3>
+      <p>
+        LITO reduces the tax payable for low-to-middle income earners. It is applied <em>after</em>
+        the gross tax is calculated and cannot reduce tax below zero (it is non-refundable).
+      </p>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr>
+              <th>Income range</th>
+              <th>LITO amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Up to $37,500</td><td>Full offset: $700</td></tr>
+            <tr><td>$37,501 – $45,000</td><td>Reduces by 5c per $1 over $37,500</td></tr>
+            <tr><td>$45,001 – $66,667</td><td>Reduces by 1.5c per $1 over $45,000</td></tr>
+            <tr><td>Over $66,667</td><td>Nil</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        The LITO schedule is the same for 2023–24, 2024–25, and 2025–26.
+        LITO is only available to Australian residents — non-residents receive no offset.
+      </p>
+    </section>
+
+    <!-- ===== Medicare ===== -->
+    <section class="card" id="medicare">
+      <h3>3. Medicare Levy</h3>
+      <p>
+        Most Australian residents pay a 2% Medicare levy on their taxable income. A shade-in (phase-in)
+        rule protects low-income earners: instead of going from $0 to the full 2% instantly, the levy
+        increases gradually in the shade-in zone.
+      </p>
+
+      <h4>How the shade-in works</h4>
+      <ul class="explainer-list">
+        <li>Below the threshold: no Medicare levy.</li>
+        <li>In the shade-in zone: levy = 10% of the amount above the threshold (this tapers up to the point where 2% of gross income equals 10% of the excess).</li>
+        <li>Above the shade-in zone: full 2% of total income.</li>
+      </ul>
+
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Threshold (no levy below)</th>
+              <th>Shade-in ends at</th>
+              <th>Full rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2025–26 &amp; 2024–25</td><td>$26,000</td><td>~$32,500</td><td>2%</td></tr>
+            <tr><td>2023–24</td><td>$24,276</td><td>~$30,345</td><td>2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        Non-residents are <strong>exempt</strong> from the Medicare levy and do not receive LITO.
+      </p>
+    </section>
+
+    <!-- ===== HELP ===== -->
+    <section class="card" id="help">
+      <h3>4. HELP / HECS Repayment</h3>
+      <p>
+        If you have a HELP debt (formerly HECS), compulsory repayments are made through the tax system
+        once your <em>repayment income</em> exceeds the minimum threshold. The repayment rate applies to
+        your <strong>entire repayment income</strong> — not just the portion above the threshold.
+      </p>
+
+      <h4>2025–26 &amp; 2024–25 thresholds</h4>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr><th>Repayment Income</th><th>Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Below $54,435</td><td>Nil</td></tr>
+            <tr><td>$54,435 – $62,848</td><td>1.0%</td></tr>
+            <tr><td>$62,849 – $70,282</td><td>2.0%</td></tr>
+            <tr><td>$70,283 – $77,780</td><td>2.5%</td></tr>
+            <tr><td>$77,781 – $87,594</td><td>3.0%</td></tr>
+            <tr><td>$87,595 – $98,398</td><td>3.5%</td></tr>
+            <tr><td>$98,399 – $107,112</td><td>4.0%</td></tr>
+            <tr><td>$107,113 – $121,664</td><td>4.5%</td></tr>
+            <tr><td>$121,665 – $138,007</td><td>5.0%</td></tr>
+            <tr><td>$138,008 – $155,584</td><td>5.5%</td></tr>
+            <tr><td>$155,585 – $166,945</td><td>6.0%</td></tr>
+            <tr><td>$166,946 – $184,149</td><td>6.5%</td></tr>
+            <tr><td>$184,150 – $195,873</td><td>7.0%</td></tr>
+            <tr><td>$195,874 – $214,127</td><td>7.5%</td></tr>
+            <tr><td>$214,128 and above</td><td>10.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        Thresholds are CPI-indexed each year. The 2025–26 figures shown here use 2024–25 as an
+        estimate pending final ATO indexation.
+      </p>
+    </section>
+
+    <!-- ===== Non-residents ===== -->
+    <section class="card" id="non-resident">
+      <h3>5. Non-resident Tax Rates</h3>
+      <p>
+        Foreign residents for tax purposes pay higher flat rates — there is no tax-free threshold,
+        no LITO, and no Medicare levy.
+      </p>
+
+      <h4>2025–26 &amp; 2024–25 (non-resident)</h4>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr><th>Taxable Income</th><th>Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>$0 – $135,000</td><td>30%</td></tr>
+            <tr><td>$135,001 – $190,000</td><td>37%</td></tr>
+            <tr><td>Over $190,000</td><td>45%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>2023–24 (non-resident)</h4>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr><th>Taxable Income</th><th>Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>$0 – $120,000</td><td>32.5%</td></tr>
+            <tr><td>$120,001 – $180,000</td><td>37%</td></tr>
+            <tr><td>Over $180,000</td><td>45%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== Superannuation ===== -->
+    <section class="card" id="super">
+      <h3>6. Superannuation (SGC)</h3>
+      <p>
+        Employer superannuation contributions are paid <em>on top of</em> your salary under the
+        Superannuation Guarantee (SGC). They are not included in your taxable income and do not
+        affect the tax calculation.
+      </p>
+      <div class="table-scroll">
+        <table class="rate-table">
+          <thead>
+            <tr><th>Financial Year</th><th>SGC Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2025–26</td><td>12.0%</td></tr>
+            <tr><td>2024–25</td><td>11.5%</td></tr>
+            <tr><td>2023–24</td><td>11.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        If you tick <strong>"Income includes super"</strong>, you enter your total package and the
+        calculator back-calculates your base salary as:
+      </p>
+      <p class="formula">Base salary = Total package ÷ (1 + SGC rate)</p>
+      <p>
+        All tax calculations then run on the base salary. The super amount is shown separately for
+        reference only.
+      </p>
+    </section>
+
+    <!-- ===== Rates ===== -->
+    <section class="card" id="rates">
+      <h3>7. Effective vs Marginal Tax Rate</h3>
+
+      <h4>Marginal rate</h4>
+      <p>
+        The rate that applies to your <em>next dollar</em> of income. This is the rate of the tax
+        bracket your income currently sits in — it tells you how much you keep from any extra earnings.
+      </p>
+
+      <h4>Effective rate</h4>
+      <p>
+        Your total deductions (income tax + Medicare levy + HELP) divided by your gross income.
+        This is the real overall percentage of your income that goes to tax — always lower than your
+        marginal rate because lower brackets are taxed at lower rates.
+      </p>
+
+      <div class="example-box">
+        <p class="example-title">Example — $90,000 in 2025–26</p>
+        <ul class="explainer-list">
+          <li>Tax-free: $18,200 @ 0% = $0</li>
+          <li>Next $26,800 @ 16% = $4,288</li>
+          <li>Next $45,000 @ 30% = $13,500 — total bracket tax: $17,788</li>
+          <li>Less LITO: $0 (income over $66,667)</li>
+          <li>Medicare (2% × $90,000): $1,800</li>
+          <li><strong>Total tax: $19,588 | Effective rate: 21.8% | Marginal rate: 30%</strong></li>
+        </ul>
+      </div>
+
+      <p class="note">
+        All calculations follow ATO published rates. This tool is for general guidance only — consult
+        a registered tax agent for personalised advice.
+      </p>
+    </section>
+
+    <div class="back-link">
+      <a href="/">&larr; Back to the calculator</a>
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius, 12px);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow, 0 2px 12px rgba(0,0,0,0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    margin-bottom: 0.25rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    border-left: 4px solid var(--au-gold, #ffcd00);
+    padding-left: 0.75rem;
+  }
+
+  h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 0.25rem;
+  }
+
+  p {
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .toc a {
+    background: #f1f5f9;
+    color: var(--au-navy, #00205b);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    transition: background 0.15s;
+  }
+
+  .toc a:hover {
+    background: var(--au-navy, #00205b);
+    color: #fff;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rate-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .rate-table th {
+    background: #f8fafc;
+    text-align: left;
+    padding: 0.6rem 0.875rem;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  .rate-table td {
+    padding: 0.55rem 0.875rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #374151;
+  }
+
+  .rate-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .rate-table tr:hover td {
+    background: #fafbfc;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: #64748b;
+    background: #f8fafc;
+    border-left: 3px solid #cbd5e1;
+    padding: 0.6rem 0.875rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .explainer-list {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    color: #374151;
+    font-size: 0.95rem;
+  }
+
+  .formula {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.9rem;
+    background: #f1f5f9;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    color: #00205b;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .example-box {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .example-title {
+    font-weight: 600;
+    color: #0369a1;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .back-link {
+    padding: 0.5rem 0 1rem;
+  }
+
+  .back-link a {
+    color: var(--au-navy, #00205b);
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 1.25rem 1rem;
+    }
+  }
+</style>
