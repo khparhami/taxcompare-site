@@ -4,6 +4,13 @@ const year = new Date().getFullYear();
 
 <footer>
   <div class="container">
+    <nav class="footer-nav">
+      <a href="/about/">About</a>
+      <a href="/faq/">FAQ</a>
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/terms/">Terms &amp; Conditions</a>
+    </nav>
     <p>Australian Tax Calculator &mdash; For general information only. Tax rates: ATO 2023–24, 2024–25, 2025–26. &copy; {year}</p>
   </div>
 </footer>
@@ -22,5 +29,27 @@ const year = new Date().getFullYear();
     max-width: 880px;
     margin: 0 auto;
     padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 0.75rem;
+  }
+
+  .footer-nav a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.15s;
+  }
+
+  .footer-nav a:hover {
+    color: #fff;
   }
 </style>
