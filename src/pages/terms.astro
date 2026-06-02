@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const updated = "2 June 2026";
+---
+
+<BaseLayout
+  title="Terms & Conditions — Australian Tax Calculator"
+  description="Terms and conditions for using the Australian Tax Calculator website."
+>
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/styles.css" />
+  </Fragment>
+
+  <main class="container">
+
+    <section class="card">
+      <h2>Terms &amp; Conditions</h2>
+      <p class="meta">Last updated: {updated}</p>
+      <p>
+        Please read these Terms and Conditions carefully before using the Australian Tax Calculator
+        website. By accessing or using this site, you agree to be bound by these terms.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>1. General Information Only</h3>
+      <p>
+        The Australian Tax Calculator is a free estimation tool designed to provide <strong>general
+        information only</strong>. It is not a substitute for professional financial, tax, or legal
+        advice. The results produced by this calculator are estimates based on publicly available ATO
+        tax rates and should not be relied upon for:
+      </p>
+      <ul>
+        <li>Lodging a tax return</li>
+        <li>Making investment or superannuation decisions</li>
+        <li>Negotiating salary or employment contracts</li>
+        <li>Any other formal financial or legal purpose</li>
+      </ul>
+      <p>
+        For personalised advice, consult a registered tax agent, financial adviser, or the
+        Australian Taxation Office directly at <a href="https://www.ato.gov.au" target="_blank" rel="noopener noreferrer">ato.gov.au</a>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>2. Accuracy of Information</h3>
+      <p>
+        While we make every effort to keep tax rates, thresholds, and offsets up to date, we do not
+        guarantee that the information is complete, current, or free from errors. Tax legislation
+        can change, and the ATO may update rates, thresholds, or interpretation at any time.
+      </p>
+      <p>
+        The calculator does not account for all individual circumstances, including but not limited
+        to:
+      </p>
+      <ul>
+        <li>The Medicare Levy Surcharge (based on private hospital cover)</li>
+        <li>The Senior Australians and Pensioners Tax Offset (SAPTO)</li>
+        <li>Investment income, capital gains, or rental income</li>
+        <li>Foreign income or foreign tax credits</li>
+        <li>Trust distributions or partnership income</li>
+        <li>Family tax benefits</li>
+        <li>State or territory taxes and levies</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>3. No Tax Agent Relationship</h3>
+      <p>
+        Use of this website does not create a tax agent, financial adviser, or any professional
+        relationship between you and the owners of this site. We are not registered tax agents
+        under the <em>Tax Agent Services Act 2009</em> and do not provide tax agent services.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>4. Limitation of Liability</h3>
+      <p>
+        To the maximum extent permitted by Australian law, we exclude all liability for any loss
+        or damage (including direct, indirect, or consequential loss) arising from your use of or
+        reliance on this website or the information it contains. This includes but is not limited to:
+      </p>
+      <ul>
+        <li>Errors or inaccuracies in tax calculations</li>
+        <li>Interruptions or unavailability of the site</li>
+        <li>Decisions made based on calculator results</li>
+        <li>Any tax liability, penalty, or interest arising from reliance on this tool</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>5. Intellectual Property</h3>
+      <p>
+        All content on this site — including text, code, design, and graphics — is the property of
+        the Australian Tax Calculator and is protected by Australian copyright law. You may view and
+        use the content for personal, non-commercial purposes. You may not reproduce, republish, or
+        distribute content without prior written permission.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>6. Third-Party Links and Advertising</h3>
+      <p>
+        This site displays advertisements served by Google AdSense and may contain links to
+        third-party websites. We do not endorse and are not responsible for the content, accuracy,
+        or privacy practices of any linked or advertised sites.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>7. Governing Law</h3>
+      <p>
+        These Terms are governed by the laws of Australia. Any disputes arising from your use of
+        this website will be subject to the jurisdiction of the courts of Australia.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>8. Changes to These Terms</h3>
+      <p>
+        We reserve the right to update these Terms and Conditions at any time. The "Last updated"
+        date at the top of this page indicates when the most recent changes were made. Continued use
+        of the site after any changes constitutes your acceptance of the updated terms.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>9. Contact</h3>
+      <p>
+        If you have any questions about these Terms, please use our <a href="/contact/">Contact page</a>.
+      </p>
+    </section>
+
+    <div class="back-link">
+      <a href="/">&larr; Back to the calculator</a>
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius, 12px);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow, 0 2px 12px rgba(0,0,0,0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    border-left: 4px solid var(--au-gold, #ffcd00);
+    padding-left: 0.75rem;
+  }
+
+  p, li {
+    color: #374151;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  a {
+    color: var(--au-navy, #00205b);
+    font-weight: 500;
+  }
+
+  .meta {
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+
+  .back-link {
+    padding: 0.5rem 0 1rem;
+  }
+
+  .back-link a {
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: 1.25rem 1rem; }
+  }
+</style>
