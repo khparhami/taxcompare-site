@@ -17,24 +17,66 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
   <main class="blog-main">
     <div class="page-header">
       <h1>Tax &amp; Finance Blog</h1>
-      <p>{posts.length} article{posts.length !== 1 ? 's' : ''}</p>
+      <p id="post-count">{posts.length} article{posts.length !== 1 ? 's' : ''}</p>
     </div>
 
-    {
-      allTags.length > 0 && (
-        <div class="tag-filter">
-          {allTags.map(tag => (
-            <span class="filter-tag">{tag}</span>
-          ))}
+    {allTags.length > 0 && (
+      <div class="tag-filter" id="tag-filter">
+        <button class="filter-tag active" data-tag="__all__">All</button>
+        {allTags.map(tag => (
+          <button class="filter-tag" data-tag={tag}>{tag}</button>
+        ))}
+      </div>
+    )}
+
+    <div class="posts-grid" id="posts-grid">
+      {posts.map(post => (
+        <div class="post-wrapper" data-tags={post.data.tags.join(',')}>
+          <BlogCard post={post} />
         </div>
-      )
-    }
-
-    <div class="posts-grid">
-      {posts.map(post => <BlogCard post={post} />)}
+      ))}
     </div>
+
+    <p class="no-results" id="no-results" hidden>No articles found for this tag.</p>
   </main>
 </BaseLayout>
+
+<script>
+  const filterContainer = document.getElementById('tag-filter');
+  const wrappers = document.querySelectorAll<HTMLElement>('.post-wrapper');
+  const countEl = document.getElementById('post-count');
+  const noResults = document.getElementById('no-results');
+  const totalCount = wrappers.length;
+
+  filterContainer?.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest<HTMLButtonElement>('.filter-tag');
+    if (!btn) return;
+
+    const selected = btn.dataset.tag!;
+
+    // Update active state
+    filterContainer.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Filter cards
+    let visible = 0;
+    wrappers.forEach(wrapper => {
+      const tags = wrapper.dataset.tags?.split(',') ?? [];
+      const show = selected === '__all__' || tags.includes(selected);
+      wrapper.hidden = !show;
+      if (show) visible++;
+    });
+
+    // Update count
+    if (countEl) {
+      countEl.textContent = selected === '__all__'
+        ? `${totalCount} article${totalCount !== 1 ? 's' : ''}`
+        : `${visible} article${visible !== 1 ? 's' : ''} tagged "${selected}"`;
+    }
+
+    if (noResults) noResults.hidden = visible > 0;
+  });
+</script>
 
 <style>
   .blog-main {
@@ -77,14 +119,44 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
     background: #ffffff;
     color: #64748b;
     border: 1px solid #e2e8f0;
-    padding: 0.25rem 0.6rem;
+    padding: 0.3rem 0.75rem;
     border-radius: 99px;
-    cursor: default;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    font-family: inherit;
+    line-height: 1.4;
+  }
+
+  .filter-tag:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #1a202c;
+  }
+
+  .filter-tag.active {
+    background: #00205b;
+    color: #ffffff;
+    border-color: #00205b;
   }
 
   .posts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.25rem;
+  }
+
+  .post-wrapper {
+    display: contents;
+  }
+
+  .post-wrapper[hidden] {
+    display: none;
+  }
+
+  .no-results {
+    text-align: center;
+    color: #64748b;
+    padding: 2rem 0;
+    font-size: 0.95rem;
   }
 </style>
