@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const updated = "2 June 2026";
+---
+
+<BaseLayout
+  title="Privacy Policy — Australian Tax Calculator"
+  description="Privacy policy for the Australian Tax Calculator. Learn what data we collect, how it is used, and your rights."
+>
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/styles.css" />
+  </Fragment>
+
+  <main class="container">
+
+    <section class="card">
+      <h2>Privacy Policy</h2>
+      <p class="meta">Last updated: {updated}</p>
+      <p>
+        This Privacy Policy explains how the Australian Tax Calculator ("we", "us", "our") handles
+        information when you use this website. We are committed to protecting your privacy and
+        being transparent about our practices.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>1. Information We Collect</h3>
+
+      <h4>Information you enter into the calculator</h4>
+      <p>
+        Salary figures, selected tax year, and calculator options (resident status, HELP debt,
+        super inclusion) are processed entirely in your browser. This data is <strong>never
+        transmitted to our servers</strong>. It is stored locally in your browser's local storage
+        solely to display your calculation history — it remains on your device and is cleared when
+        you click "Clear History" or clear your browser data.
+      </p>
+
+      <h4>Automatically collected information</h4>
+      <p>
+        Like most websites, our hosting provider may collect standard server log data including your
+        IP address, browser type, operating system, referring URL, and pages visited. This
+        information is used for security monitoring and aggregate traffic analysis only. We do not
+        use this data to identify individual users.
+      </p>
+
+      <h4>Cookies</h4>
+      <p>
+        We use cookies from the following third-party services:
+      </p>
+      <ul>
+        <li>
+          <strong>Google AdSense</strong> — serves advertisements on this site. Google may use
+          cookies to personalise ads based on your browsing history. You can manage ad
+          personalisation at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">adssettings.google.com</a>.
+        </li>
+        <li>
+          <strong>Analytics (if applicable)</strong> — aggregate, anonymised usage statistics to
+          help us understand which pages are most useful. No personally identifiable information
+          is collected.
+        </li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>2. How We Use Information</h3>
+      <p>We use the information collected to:</p>
+      <ul>
+        <li>Operate and improve the calculator and website</li>
+        <li>Monitor for abuse, security incidents, and technical errors</li>
+        <li>Display relevant advertisements through Google AdSense</li>
+        <li>Understand aggregate usage patterns to improve content</li>
+      </ul>
+      <p>We do <strong>not</strong>:</p>
+      <ul>
+        <li>Sell or share personal data with third parties for marketing</li>
+        <li>Store your salary or financial inputs on our servers</li>
+        <li>Use your data to build individual profiles</li>
+        <li>Send marketing emails (we collect no email addresses)</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>3. Third-Party Services</h3>
+      <p>
+        This site uses Google AdSense to display advertising. Google's use of cookies enables it
+        to serve ads based on your visits to this and other websites. Google's privacy policy is
+        available at <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>.
+      </p>
+      <p>
+        We are not responsible for the privacy practices of third-party sites linked from our
+        content. We encourage you to review the privacy policies of any site you visit.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>4. Data Retention</h3>
+      <p>
+        Calculation history is stored only in your own browser's local storage. You can delete
+        it at any time by clicking "Clear History" in the calculator or by clearing your browser's
+        site data. Server log data retained by our hosting provider is subject to their own
+        retention policies (typically 30–90 days).
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>5. Your Rights</h3>
+      <p>
+        Because we do not collect or store personally identifiable information about you, most
+        formal data subject rights (access, correction, deletion) are not applicable in practice.
+        However, if you have any privacy-related concerns or questions, please contact us via the
+        <a href="/contact/">Contact page</a>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>6. Changes to This Policy</h3>
+      <p>
+        We may update this Privacy Policy from time to time. The "Last updated" date at the top
+        of this page reflects the most recent revision. Continued use of the site following any
+        changes constitutes your acceptance of the updated policy.
+      </p>
+    </section>
+
+    <div class="back-link">
+      <a href="/">&larr; Back to the calculator</a>
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius, 12px);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow, 0 2px 12px rgba(0,0,0,0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    border-left: 4px solid var(--au-gold, #ffcd00);
+    padding-left: 0.75rem;
+  }
+
+  h4 {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+  }
+
+  p, li {
+    color: #374151;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  a {
+    color: var(--au-navy, #00205b);
+    font-weight: 500;
+  }
+
+  .meta {
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+
+  .back-link {
+    padding: 0.5rem 0 1rem;
+  }
+
+  .back-link a {
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: 1.25rem 1rem; }
+  }
+</style>
