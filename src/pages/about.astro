@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About — Australian Tax Calculator"
+  description="About the Australian Tax Calculator — a free, browser-based income tax estimator built on official ATO rates for 2023–24, 2024–25, and 2025–26."
+>
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/styles.css" />
+  </Fragment>
+
+  <main class="container">
+
+    <section class="card hero-card">
+      <div class="hero-icon">🦘</div>
+      <div>
+        <h2>About the Australian Tax Calculator</h2>
+        <p class="tagline">Free, fast, and built on official ATO rates.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>What this is</h3>
+      <p>
+        The Australian Tax Calculator is a free, browser-based tool that estimates your income tax,
+        Medicare levy, and take-home pay for the 2023–24, 2024–25, and 2025–26 financial years.
+        It was built because most tax calculators are either too simple (no HECS, no non-resident
+        rates) or buried inside clunky government portals.
+      </p>
+      <p>
+        Everything runs in your browser. No account required, no data sent to a server, no email
+        sign-up. Enter a salary, get a breakdown.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>What it calculates</h3>
+      <ul class="feature-list">
+        <li>
+          <span class="feature-icon">📊</span>
+          <div>
+            <strong>Income tax</strong> — using the exact ATO bracket formula for residents and
+            non-residents, for all three supported financial years.
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">💊</span>
+          <div>
+            <strong>Medicare levy</strong> — 2% with the low-income shade-in zone correctly applied.
+            Non-residents are automatically exempt.
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">🎓</span>
+          <div>
+            <strong>HECS / HELP repayment</strong> — full ATO threshold table, applied to entire
+            income as the ATO requires.
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">💼</span>
+          <div>
+            <strong>Low Income Tax Offset (LITO)</strong> — the two-phase reduction automatically
+            calculated and capped at tax payable.
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">🏗️</span>
+          <div>
+            <strong>Super package back-calculation</strong> — enter a total package and get your
+            base salary, or enter base salary and see your SGC super.
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">🔄</span>
+          <div>
+            <strong>Comparison history</strong> — run multiple salaries and years, compare side by
+            side in a sortable table.
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>What it doesn't calculate</h3>
+      <p>
+        To keep results accurate for the most common situations, a few things are intentionally
+        out of scope:
+      </p>
+      <ul class="out-of-scope">
+        <li>Medicare Levy Surcharge (depends on private hospital cover status)</li>
+        <li>Senior Australians and Pensioners Tax Offset (SAPTO)</li>
+        <li>Investment income, capital gains, dividends, or rental income</li>
+        <li>Foreign income or foreign tax offsets</li>
+        <li>Family tax benefits or child care subsidies</li>
+        <li>State or territory payroll taxes</li>
+      </ul>
+      <p>
+        For those scenarios, consult a registered tax agent or use the ATO's official calculators
+        at <a href="https://www.ato.gov.au" target="_blank" rel="noopener noreferrer">ato.gov.au</a>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>Data sources</h3>
+      <p>All figures used in this calculator come directly from official ATO publications:</p>
+      <ul class="source-list">
+        <li>ATO individual income tax rates (resident and non-resident)</li>
+        <li>ATO Medicare levy thresholds and shade-in rules</li>
+        <li>ATO HELP compulsory repayment thresholds</li>
+        <li>Superannuation Guarantee (SGC) rate schedule</li>
+        <li>Low Income Tax Offset (LITO) schedule</li>
+      </ul>
+      <p>
+        Rates are reviewed and updated at the start of each new financial year. If you spot an
+        error or outdated figure, please <a href="/contact/">let us know</a>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>Disclaimer</h3>
+      <p>
+        This calculator provides general information only and is not financial or tax advice.
+        Results are estimates and should not be used to lodge a tax return or make formal financial
+        decisions. See our <a href="/terms/">Terms &amp; Conditions</a> and
+        <a href="/privacy/">Privacy Policy</a> for full details.
+      </p>
+    </section>
+
+    <div class="cta-card card">
+      <p>Ready to see your numbers?</p>
+      <a href="/" class="btn-primary">Go to the calculator &rarr;</a>
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius, 12px);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow, 0 2px 12px rgba(0,0,0,0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .hero-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hero-icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    margin-bottom: 0.25rem;
+  }
+
+  .tagline {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    border-left: 4px solid var(--au-gold, #ffcd00);
+    padding-left: 0.75rem;
+  }
+
+  p {
+    color: #374151;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: var(--au-navy, #00205b);
+    font-weight: 500;
+  }
+
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .feature-list li {
+    display: flex;
+    gap: 0.875rem;
+    align-items: flex-start;
+  }
+
+  .feature-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
+
+  .feature-list strong {
+    color: #1a202c;
+  }
+
+  .feature-list div {
+    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .out-of-scope,
+  .source-list {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: #374151;
+    font-size: 0.95rem;
+  }
+
+  .cta-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #00205b 0%, #003087 100%);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .cta-card p {
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .btn-primary {
+    background: var(--au-gold, #ffcd00);
+    color: #00205b;
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: 1.25rem 1rem; }
+    .hero-card { flex-direction: column; align-items: flex-start; }
+    .cta-card { flex-direction: column; align-items: flex-start; }
+  }
+</style>
