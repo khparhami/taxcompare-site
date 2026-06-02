@@ -1,0 +1,258 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const faqs = [
+  {
+    category: "About the Calculator",
+    items: [
+      {
+        q: "How accurate is this calculator?",
+        a: "The calculator uses the exact tax brackets, LITO schedules, Medicare levy thresholds, and HELP repayment rates published by the ATO for each supported financial year. Results are accurate for the majority of salaried employees with straightforward tax situations. It does not account for additional offsets (e.g. SAPTO, LMITO if applicable), investment income, rental income, or the Medicare Levy Surcharge."
+      },
+      {
+        q: "Does it include the Medicare Levy?",
+        a: "Yes. The 2% Medicare levy is calculated separately and shown as its own line item in the breakdown. The shade-in zone for low-income earners is also applied — if your income is below or near the threshold, the levy phases in gradually rather than jumping to the full 2% immediately. Non-residents are exempt and the calculator handles this automatically when you uncheck the resident option."
+      },
+      {
+        q: "Does it include HECS / HELP repayments?",
+        a: "Yes. Tick the "I have a HELP / HECS debt" checkbox and the calculator adds the compulsory repayment based on ATO income thresholds for the selected year. The repayment rate applies to your entire income (not just the excess above the threshold), which is how the ATO calculates it."
+      },
+      {
+        q: "Which tax year is used by default?",
+        a: "The calculator defaults to 2025–26, the current financial year. You can switch to 2024–25 or 2023–24 (pre Stage 3) from the dropdown. The comparison history table lets you run the same salary across multiple years to see the difference."
+      },
+      {
+        q: "Is this official ATO advice?",
+        a: "No. This calculator is a free general-purpose estimation tool based on publicly available ATO rates. It is not financial or tax advice, and results should not be used for lodging a tax return or making formal financial decisions. For personalised advice, consult a registered tax agent or financial adviser."
+      },
+      {
+        q: "What does 'Income includes super' mean?",
+        a: "If your employment contract quotes a total package (e.g. '$95,000 including super'), tick this box and enter the package figure. The calculator back-calculates your base salary as package ÷ (1 + SGC rate) and runs all tax calculations on the base salary. The super amount is then shown separately for reference."
+      },
+      {
+        q: "Why is the Medicare levy shown as $0 for my salary?",
+        a: "If your income is below the low-income threshold ($26,000 in 2025–26), no Medicare levy applies. If you've unchecked the Australian resident option, non-residents are also exempt from the Medicare levy."
+      },
+      {
+        q: "Does the calculator save my data?",
+        a: "Your calculation history is saved in your browser's local storage — it never leaves your device and is not sent to any server. You can clear it at any time using the 'Clear History' button. The site does not use accounts or store personal information."
+      },
+    ]
+  },
+  {
+    category: "Tax Concepts",
+    items: [
+      {
+        q: "What is a marginal tax rate?",
+        a: "Your marginal rate is the rate that applies to your next dollar of income — it's the rate of the tax bracket your income currently sits in. It tells you how much extra tax you'd pay on a pay rise, bonus, or side income. Important: your marginal rate does not apply to all your income, only to the slice within that bracket."
+      },
+      {
+        q: "What is an effective tax rate?",
+        a: "Your effective rate (also called your average rate) is your total tax paid divided by your gross income. It's always lower than your marginal rate because your first dollars are taxed at 0% and lower brackets. It's the most accurate single number to describe your overall tax burden."
+      },
+      {
+        q: "Will a pay rise push me into a higher bracket and leave me worse off?",
+        a: "No — this is a very common myth. In Australia's progressive system, a higher bracket rate only applies to the dollars that fall within that bracket. Your existing income is never retroactively taxed at the new rate. A pay rise always increases your take-home pay, even if some of the extra is taxed at a higher rate."
+      },
+      {
+        q: "What is the Low Income Tax Offset (LITO)?",
+        a: "LITO is a non-refundable tax offset that reduces the tax payable for lower earners. The maximum offset is $700 (for incomes up to $37,500). It phases out between $37,500 and $66,667. LITO is only available to Australian residents — it is automatically applied by this calculator."
+      },
+      {
+        q: "What is the tax-free threshold?",
+        a: "Australian residents don't pay income tax on the first $18,200 they earn each year. You claim this by ticking the relevant box on your TFN declaration when you start a new job. Non-residents have no tax-free threshold and are taxed from the first dollar."
+      },
+      {
+        q: "What changed with the Stage 3 tax cuts?",
+        a: "From 1 July 2024 (the 2024–25 financial year), the second bracket rate was reduced from 19% to 16%, the 32.5% bracket was replaced with a flat 30% rate stretching to $135,000, and the 45% threshold moved from $180,000 to $190,000. You can compare the 2023–24 and 2024–25 results in this calculator to see your personal saving."
+      },
+    ]
+  },
+  {
+    category: "Tax Returns & the ATO",
+    items: [
+      {
+        q: "Do I need to lodge a tax return?",
+        a: "Most people who earned income in Australia during the financial year (1 July – 30 June) need to lodge a return. Exceptions include those whose only income was below the tax-free threshold and who didn't have any tax withheld. If you're unsure, the ATO's Do I need to lodge? tool at ato.gov.au can confirm."
+      },
+      {
+        q: "When is the tax return deadline?",
+        a: "If you lodge yourself via myTax, the deadline is 31 October each year (for the financial year ending 30 June). If you use a registered tax agent, you may be entitled to an extended deadline — sometimes as late as May of the following year."
+      },
+      {
+        q: "Why did I get a tax refund?",
+        a: "A refund means your employer withheld more tax during the year than your final liability. This commonly happens if you didn't work the full year, you have deductions that reduced your taxable income, or your income varied and your employer over-estimated your annual earnings."
+      },
+      {
+        q: "Why do I have a tax debt?",
+        a: "A tax bill at year end means you were under-withheld. Common causes include having two jobs and claiming the tax-free threshold at both, having investment or rental income not subject to withholding, or forgetting to declare a HELP debt to your employer."
+      },
+      {
+        q: "What records should I keep for my tax return?",
+        a: "The ATO requires you to keep records for five years from when you lodge. Useful records include payment summaries or income statements, receipts for work-related deductions, bank statements showing investment income, and rental property records. The ATO's myDeductions tool (within the ATO app) makes this easy to track throughout the year."
+      },
+      {
+        q: "Where can I find the official tax rates?",
+        a: "The ATO publishes all current and historical tax rates at ato.gov.au. Search for 'individual income tax rates' or 'tax withheld calculators'. The rates used in this calculator are sourced directly from those ATO publications."
+      },
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Frequently Asked Questions — Australian Tax Calculator"
+  description="Answers to common questions about the Australian tax calculator: accuracy, Medicare levy, HECS, tax brackets, tax returns, and more."
+>
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/styles.css" />
+  </Fragment>
+
+  <main class="container">
+
+    <section class="card intro-card">
+      <h2>Frequently Asked Questions</h2>
+      <p>
+        Answers to the most common questions about the calculator and Australian income tax.
+        Can't find what you're looking for? Visit the <a href="/contact/">Contact page</a> or
+        read the <a href="/how-the-tax-calculator-works/">full tax rules explainer</a>.
+      </p>
+    </section>
+
+    {faqs.map(section => (
+      <section class="card faq-section">
+        <h3>{section.category}</h3>
+        <div class="faq-list">
+          {section.items.map(item => (
+            <details class="faq-item">
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <div class="back-link">
+      <a href="/">&larr; Back to the calculator</a>
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius, 12px);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--shadow, 0 2px 12px rgba(0,0,0,0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--au-navy, #00205b);
+    border-left: 4px solid var(--au-gold, #ffcd00);
+    padding-left: 0.75rem;
+  }
+
+  .intro-card p a {
+    color: var(--au-navy, #00205b);
+    font-weight: 500;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .faq-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .faq-item summary {
+    padding: 0.875rem 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a202c;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--au-navy, #00205b);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .faq-item[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-item summary:hover {
+    background: #f8fafc;
+  }
+
+  .faq-item[open] summary {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .faq-item p {
+    padding: 0.875rem 1rem;
+    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .back-link {
+    padding: 0.5rem 0 1rem;
+  }
+
+  .back-link a {
+    color: var(--au-navy, #00205b);
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 1.25rem 1rem;
+    }
+  }
+</style>
