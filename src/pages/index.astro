@@ -116,11 +116,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </tr>
           <tr class="net-row">
             <td><strong>Net Income (Annual)</strong></td>
-            <td class="amount net"><strong id="t-net-annual"></strong></td>
-          </tr>
-          <tr>
-            <td>Net Income (Monthly)</td>
-            <td class="amount" id="t-net-monthly"></td>
+            <td class="amount net">
+              <strong id="t-net-annual"></strong>
+              <span class="net-monthly-inline"> / <span id="t-net-monthly"></span> /mo</span>
+            </td>
           </tr>
           <tr>
             <td>Net Income (Fortnightly)</td>
