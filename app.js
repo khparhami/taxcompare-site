@@ -399,6 +399,7 @@ function renderHistory(history) {
         <td>${helpCell}</td>
         <td class="td-deduction"><strong>${fmt(grandTotal)}</strong></td>
         <td class="td-net">${fmt(r.netIncome)}</td>
+        <td class="td-net">${fmt(r.netIncome / 12)}</td>
         <td class="td-rate">${fmtPct(r.effectiveRate)}</td>
         <td class="td-rate">${fmtPct(r.marginalRate)}</td>
       </tr>
